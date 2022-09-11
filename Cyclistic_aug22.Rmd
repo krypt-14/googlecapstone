@@ -1,0 +1,266 @@
+---
+title: "Google Capstone - Cyclistic Case Study"
+author: "jpoh"
+date: '2022-09-02'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(foreign)
+library(arm)
+library(ggplot2)
+library(reshape2)
+library(scales)
+library(plotly)
+```
+
+
+```{r}
+aug.22 <- read.csv("202208-divvy-tripdata.csv")
+jul.22 <- read.csv("202207-divvy-tripdata.csv")
+jun.22 <- read.csv("202206-divvy-tripdata.csv")
+may.22 <- read.csv("202205-divvy-tripdata.csv")
+apr.22 <- read.csv("202204-divvy-tripdata.csv")
+mar.22 <- read.csv("202203-divvy-tripdata.csv")
+feb.22 <- read.csv("202202-divvy-tripdata.csv")
+jan.22 <- read.csv("202201-divvy-tripdata.csv")
+dec.21 <- read.csv("202112-divvy-tripdata.csv")
+nov.21 <- read.csv("202111-divvy-tripdata.csv")
+oct.21 <- read.csv("202110-divvy-tripdata.csv")
+sep.21 <- read.csv("202109-divvy-tripdata.csv")
+```
+
+
+```{r}
+colnames(aug.22)
+colnames(jul.22)
+colnames(jun.22)
+colnames(may.22)
+colnames(apr.22)
+colnames(mar.22)
+colnames(feb.22)
+colnames(jan.22)
+colnames(dec.21)
+colnames(nov.21)
+colnames(oct.21)
+colnames(sep.21)
+```
+
+
+
+
+
+Question to take note
+1. How many members and how many casuals
+2. the trip duration
+3. the distance travel 
+4. Maybe plot a map to show the area of interest 
+
+
+
+
+
+```{r}
+df <- bind_rows(aug.22,jul.22,jun.22,may.22, apr.22,mar.22,feb.22,jan.22,dec.21,nov.21,oct.21,sep.21)
+```
+
+
+```{r}
+head(df)
+```
+
+```{r}
+str(df)
+```
+
+
+```{r}
+df$started_at <-
+  as.POSIXct(df$started_at, format = "%Y-%m-%d %H:%M:%S", tz = "UTC")
+
+df$ended_at <-
+  as.POSIXct(df$ended_at, format = "%Y-%m-%d %H:%M:%S" ,tz = "UTC")
+```
+
+
+```{r}
+df$ride_duration <- difftime(df$ended_at, df$started_at)
+```
+
+```{r}
+table(df$rideable_type)
+```
+
+```{r}
+table(df$member_casual)
+```
+
+
+```{r}
+table(is.na(df$member_casual))
+```
+
+
+```{r}
+df$started_at <- as.Date(df$started_at)
+df$ended_at <- as.Date(df$ended_at)
+```
+
+```{r}
+df$month.start <- format(as.Date(df$started_at), "%m")
+df$day.start <- format(as.Date(df$started_at), "%d")
+df$year.start <- format(as.Date(df$started_at), "%Y")
+df$day_of_week.start <- format(as.Date(df$started_at), "%A")
+```
+
+```{r}
+is.factor(df$ride_duration)
+df$ride_duration <- as.numeric(as.character(df$ride_duration))
+is.numeric(df$ride_duration)
+```
+
+```{r}
+summary(df)
+```
+
+```{r}
+head(df)
+```
+
+
+```{r}
+df[which(df$ride_duration < 0),]
+```
+
+```{r}
+df_trip <-  df[!(df$ride_duration < 0),]
+```
+
+
+
+```{r}
+summary(df_trip$ride_duration)
+```
+
+```{r}
+aggregate(df_trip$ride_duration ~ df_trip$member_casual, FUN = mean)
+aggregate(df_trip$ride_duration ~ df_trip$member_casual, FUN = median)
+aggregate(df_trip$ride_duration ~ df_trip$member_casual, FUN = max)
+aggregate(df_trip$ride_duration ~ df_trip$member_casual, FUN = min)
+```
+
+```{r}
+df_trip$members_casual.num <- as.numeric(as.character(recode(df_trip$member_casual,
+                                             "casual" = "1",
+                                             "member" = "0",
+                                             .default = NULL)))
+
+df_trip$days <- as.numeric(as.character(recode(df_trip$day_of_week.start,
+                                             "Monday" = "1",
+                                             "Tuesday" = "2",
+                                             "Wednesday" = "3",
+                                             "Thursday" = "4",
+                                             "Friday" = "5",
+                                             "Saturday" = "6",
+                                             "Sunday" = "7",
+                                             .default = NULL)))
+
+df_trip$month <- as.integer(df_trip$month)
+```
+
+
+```{r}
+ggplot(data = df_trip ,mapping= aes(x= days, fill = member_casual)) +
+  geom_bar() +
+  facet_wrap(~member_casual)+
+  theme(axis.text.x = element_text(angle = 60, hjust =1)) +
+  labs(title = "Numbers of Ride by Member Types", x = "Days of the Week", y = "Number of Rides")
+```
+
+```{r}
+df_trip %>% 
+  group_by(member_casual, days) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_duration))%>%
+  ggplot(aes(x = days, y = average_duration, fill = member_casual)) + 
+  geom_col(position = 'dodge')
+```
+
+
+```{r}
+ggplot(data = df_trip ,mapping= aes(x= month, fill = member_casual)) +
+  geom_bar() +
+  facet_wrap(~member_casual)+
+  theme(axis.text.x = element_text(angle = 60, hjust =1)) +
+  labs(title = "Numbers of Ride by Member Types", x = "Months", y = "Number of Rides")
+```
+
+```{r}
+df_trip %>% 
+  group_by(member_casual, month) %>% 
+  summarise(number_of_rides = n(), average_duration = mean(ride_duration))%>%
+  ggplot(aes(x = month, y = average_duration, fill = member_casual)) + 
+  geom_col(position = 'dodge')
+```
+
+```{r}
+df_trip %>% 
+  group_by(member_casual, rideable_type) %>%
+  summarise(n = n()) %>% 
+  ggplot(aes(x= member_casual, y = n , fill =rideable_type)) + 
+  geom_bar(stat = 'identity') + 
+  labs(x = "Type", y = "Number of Riders", title="Choice of Bike by Riders")
+```
+
+```{r}
+df_trip %>% 
+  group_by(member_casual, rideable_type) %>%
+  summarise(n = n(), average_duration = mean(ride_duration)) %>% 
+  ggplot(aes(x= member_casual, y = average_duration , fill =rideable_type)) + 
+  geom_bar(stat = 'identity') + 
+  labs(x = "Type", y = "Average Duration", title="Choice of Bike by Riders")
+```
+
+
+```{r}
+ggplot(data = df_trip ,mapping= aes(x= days, fill = rideable_type)) +
+  geom_bar() +
+  facet_wrap(~member_casual)+
+  theme(axis.text.x = element_text(angle = 60, hjust =1)) +
+  labs(title = "Numbers of Ride by Member Types", x = "Days of the Week", y = "Number of Rides")
+```
+
+
+```{r}
+plot_mapbox(maps::chicago.cities) %>%
+  add_markers(
+    x = ~start_lng, 
+    y = ~start_lat, 
+    size = ~pop, 
+    color = ~country.etc,
+    colors = "Accent",
+    text = ~paste(name, pop),
+    hoverinfo = "text"
+  )
+```
+
+
+```{r}
+model <- lm(trips_df_2$members_subscribers ~ trips_df_2$ride_duration , date = trips_df_2)
+```
+
+
+```{r}
+display(model)
+```
+```{r}
+plot(model)
+```
+
