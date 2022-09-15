@@ -14,9 +14,7 @@ Design marketing strategies aimed at converting casual riders into annual member
 Based on three questions that was assign, as a data analyst I would need to understand the how annual membership riders compare to casual members, with that I can navigate the route map they take, the trends of time and day they are renting a bike and where can we tackle the problems to improve media influence.
 
 ### Prepare
-In this process we would need to prepare the data to analyse and identify trends, by using the previous 12 months of Cyclist trip data, which can be found in the link below.
-
-Cyclist Trip Data - divvy-tripdata.s3.amazonaws.com
+In this process we would need to prepare the data to analyse and identify trends, by using the previous 12 months of Cyclist trip data, which can be found in the following link: [Cyclist Trip Data - divvy-tripdata.s3.amazonaws.com](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
 The data is on the AWS server where it has clear description and from a known source, the span of the data made available are from September 2021 to August 2022, it is organised in each rolling quarters by each year. The data is reliable and came from the original source from the company that is current and cited. The data source is the company so everything about the users personal information is stay hidden or kept private to the company only. 
 Note: that data-privacy issues prohibit you from using riders' personally identifiable information. This means that you won't be able to connect pass purchases to credit card numbers to determine if casual riders live in the Cyclistic service area or if they have purchased multiple single passes.
