@@ -40,10 +40,12 @@ The next step is to remove rows that are irrelevant to the objective by using th
 
 Once those are sorted, we will breakdown the date to year, month, day, and day of the week so we can carry out descriptive analysis or aggregate the values. 
 
-`df$month.start <- format(as.Date(df$started_at), "%m")
+```r
+df$month.start <- format(as.Date(df$started_at), "%m")
 df$day.start <- format(as.Date(df$started_at), "%d")
 df$year.start <- format(as.Date(df$started_at), "%Y")
-df$day_of_week.start <- format(as.Date(df$started_at), "%A")`
+df$day_of_week.start <- format(as.Date(df$started_at), "%A")
+```
 
 
 ### Analyse
