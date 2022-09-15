@@ -26,7 +26,7 @@ Tools I have used for this project, are Excel to explore the dataset, understand
 
 R Studio is used to pre-process and manipulate the data to reach the objective statement. The data consist of 12 seperate csv sheet break it down to each month. All sheets contains the same header and variables.
 
-To verify the contents of the data, we would need to check the data types and missing values for each column, by using str() function you can check the datatypes for each variables. 
+To verify the contents of the data, we would need to check the data types and missing values for each column, by using `str()` function you can check the datatypes for each variables. 
 
 Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function difftime() will determine the durations for each bike rentals. 
 
