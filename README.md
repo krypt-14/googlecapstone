@@ -28,7 +28,7 @@ R Studio is used to pre-process and manipulate the data to reach the objective s
 
 To verify the contents of the data, we would need to check the data types and missing values for each column, by using `str()` function you can check the datatypes for each variables. 
 
-Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function difftime() will determine the durations for each bike rentals. 
+Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function `difftime()` will determine the durations for each bike rentals. 
 
 ### Analyse
 
