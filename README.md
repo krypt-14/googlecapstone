@@ -30,7 +30,8 @@ To verify the contents of the data, we would need to check the data types and mi
 
 Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function `difftime()` will determine the durations for each bike rentals. 
 
-After figuring out the time difference, we checked that the time duration contained negative values, and that's usually where staff require to service the bike
+After figuring out the time difference, we checked that the time duration contained negative values, and that is considered values that are not clean and does not make sense to the objective of the task.
+![trip_duration](trip_duration.png)
 
 ### Analyse
 
