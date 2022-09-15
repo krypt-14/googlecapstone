@@ -28,12 +28,26 @@ To verify the contents of the data, we would need to check the data types and mi
 
 ![str_function](str_function.png)
 
-Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function `difftime()` will determine the durations for each bike rentals. 
+Before cleaning, it would be efficient to bind all 12 seperate sheets into one dataframe, and begin the cleaning process for analysing. Firstly, in the dataframe there are missing variables in the timeduration column however start and end time of bike rentals does not have missing variables, so to ensure that we have sufficient variables to carry out the analysis, we need to convert the variables from character to datetime, and a function `difftime()` will determine the durations for each bike rentals, and convert the time difference column into numeric instead of characters.  
 
 After figuring out the time difference, we checked that the time duration contained negative values, and that is considered values that are not clean and does not make sense to the objective of the task.
+
 ![trip_duration](trip_duration.png)
 
+The next step is to remove rows that are irrelevant to the objective by using the `select(-c())` function, and observe the quantile range for the variable. 
+
+![Screen Shot 2022-09-15 at 11 11 49 pm](https://user-images.githubusercontent.com/63161117/190412574-e9f37806-317a-4c29-9425-490cfc161458.png)
+
+Once those are sorted, we will breakdown the date to year, month, day, and day of the week so we can carry out descriptive analysis or aggregate the values. 
+
+`df$month.start <- format(as.Date(df$started_at), "%m")
+df$day.start <- format(as.Date(df$started_at), "%d")
+df$year.start <- format(as.Date(df$started_at), "%Y")
+df$day_of_week.start <- format(as.Date(df$started_at), "%A")`
+
+
 ### Analyse
+
 
 
 ### Share
