@@ -48,6 +48,7 @@ df$day_of_week.start <- format(as.Date(df$started_at), "%A")
 ```
 
 
+
 ### Analyse
 
 
